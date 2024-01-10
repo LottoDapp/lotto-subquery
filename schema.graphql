@@ -1,0 +1,76 @@
+# To improve query performance, we strongly suggest adding indexes to any field that you plan to filter or sort by
+# Add the `@index` or `@index(unique: true)` annotation after any non-key field
+# https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
+
+
+type Account @entity {
+    id: ID! # account address
+    stakes: [Stake] @derivedFrom(field: "account") #virtual field
+    totalStake: BigInt!
+    rewards: [Reward] @derivedFrom(field: "account") #virtual field
+    rewardsClaimed: [RewardsClaimed] @derivedFrom(field: "account") #virtual field
+    totalRewards: BigInt!
+    totalClaimed: BigInt!
+    totalPending: BigInt!
+}
+
+type Stake @entity {
+    id: ID! # Extrinsic hash
+    account: Account!
+    amount: BigInt!
+    era: BigInt!
+    period: BigInt!
+    subPeriod: BigInt!
+    blockNumber: BigInt!
+}
+
+type DAppReward @entity {
+    id: ID! # Transaction hash
+    era: BigInt!
+    tierId: BigInt!
+    account: Account!
+    amount: BigInt!
+}
+
+type PalletInfo @entity {
+    id: ID! # always 0
+    currentEra: BigInt!
+    currentPeriod: BigInt!
+    currentSubPeriod: BigInt!
+}
+
+type DAppStakingEra @entity {
+    id: ID! # Transaction hash
+    era: BigInt!
+    blockNumber: BigInt!
+}
+
+type DAppSubPeriod @entity {
+    id: ID! # Transaction hash
+    period: BigInt!
+    subPeriod: BigInt!
+    blockNumber: BigInt!
+}
+
+type RaffleDone @entity {
+    id: ID! # Transaction hash
+    era: BigInt!
+    totalRewards: BigInt!
+    nbWinners: BigInt!
+    nbParticipants: BigInt!
+    totalValue: BigInt!
+}
+
+type Reward @entity {
+    id: ID! # Transaction hash
+    account: Account!
+    era: BigInt!
+    amount: BigInt!
+}
+
+type RewardsClaimed @entity {
+    id: ID! # Transaction hash
+    account: Account!
+    amount: BigInt!
+}
+
