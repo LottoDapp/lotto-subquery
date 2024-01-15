@@ -18,9 +18,9 @@ type Stake @entity {
     id: ID! # Extrinsic hash
     account: Account!
     amount: BigInt!
-    era: BigInt!
-    period: BigInt!
-    subPeriod: BigInt!
+    era: BigInt
+    period: BigInt
+    subPeriod: String
     blockNumber: BigInt!
 }
 
@@ -34,9 +34,9 @@ type DAppReward @entity {
 
 type PalletInfo @entity {
     id: ID! # always 0
-    currentEra: BigInt!
-    currentPeriod: BigInt!
-    currentSubPeriod: BigInt!
+    currentEra: BigInt
+    currentPeriod: BigInt
+    currentSubPeriod: String
 }
 
 type DAppStakingEra @entity {
@@ -48,7 +48,7 @@ type DAppStakingEra @entity {
 type DAppSubPeriod @entity {
     id: ID! # Transaction hash
     period: BigInt!
-    subPeriod: BigInt!
+    subPeriod: String!
     blockNumber: BigInt!
 }
 

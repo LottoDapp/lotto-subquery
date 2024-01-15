@@ -30,7 +30,7 @@ async function getPalletInfo(): Promise<PalletInfo> {
         id: '0',
         currentEra: BigInt(0),
         currentPeriod: BigInt(0),
-        currentSubPeriod: BigInt(0),
+        currentSubPeriod: '',
     });
 }
 
@@ -61,10 +61,11 @@ export async function handleStake(event: SubstrateEvent): Promise<void> {
 
     await logger.info("---------- DAppStaking - Stake --------- ");
     if (!smartContract.toString().includes(DAPPSTAKING_CONTRACT_ID)) {
+        await logger.info("Other contract :" + smartContract.toString());
         return;
     }
 
-    await logger.info("---------- DAppStaking - Stake --------- ");
+    await logger.info("Matched contract");
 
     const amount = (balanceOf as Balance).toBigInt();
 
@@ -96,10 +97,10 @@ export async function handleUnstake(event: SubstrateEvent): Promise<void> {
 
     await logger.info("---------- DSppStaking - Unstake --------- ");
     if (!smartContract.toString().includes(DAPPSTAKING_CONTRACT_ID)) {
+        await logger.info("Other contract :" + smartContract.toString());
         return;
     }
-
-    await logger.info("---------- DSppStaking - Unstake --------- ");
+    await logger.info("Matched contract");
 
     const amount = (balanceOf as Balance).toBigInt();
 
@@ -125,37 +126,32 @@ export async function handleUnstake(event: SubstrateEvent): Promise<void> {
 export async function handleDAppReward(event: SubstrateEvent): Promise<void> {
     const {
         event: {
-            data: [account, smartContract, era, balanceOf],
+            data: [beneficiary, smartContract, tierId, era, amount],
         },
     } = event;
     await logger.info("---------- DAppStaking - DApp Reward --------- ");
 
     if (!smartContract.toString().includes(DAPPSTAKING_CONTRACT_ID)) {
+        await logger.info("Other smartContract :" + smartContract.toString());
         return;
     }
-
-    if (!account.toString().includes(DAPPSTAKING_DEVELOPER_ID)) {
-        return;
-    }
-
-    await logger.info("---------- DAppStaking - DApp Reward --------- ");
 
     /* save the developer account the first time to avoid an error with FK */
-    let developerAccount = await Account.get(account.toString());
+    let developerAccount = await Account.get(beneficiary.toString());
     if (!developerAccount) {
-        developerAccount = new Account(account.toString(), BigInt(0), BigInt(0), BigInt(0), BigInt(0));
+        developerAccount = new Account(beneficiary.toString(), BigInt(0), BigInt(0), BigInt(0), BigInt(0));
         await developerAccount.save();
     }
 
-    const amount = (balanceOf as Balance).toBigInt();
     const bi_era = await toBigInt(era);
+    const tierId_era = await toBigInt(tierId);
 
     let reward = DAppReward.create({
         id: `${event.block.block.header.number.toNumber()}-${event.idx}`,
         era: bi_era,
         accountId: developerAccount.id,
-        amount,
-        tierId: BigInt(0),
+        amount: (amount as Balance).toBigInt(),
+        tierId: tierId_era,
     });
     await reward.save();
 }
@@ -168,8 +164,6 @@ export async function handleNewEra(event: SubstrateEvent): Promise<void> {
     } = event;
 
     await logger.info("---------- DAppStaking - New Era --------- ");
-    await logger.info(DAPPSTAKING_CONTRACT_ID);
-    await logger.info(DAPPSTAKING_DEVELOPER_ID);
 
     const newEra = await toBigInt(era);
     let dappStakingEra = DAppStakingEra.create({
@@ -194,16 +188,15 @@ export async function handleNewSubPeriod(event: SubstrateEvent): Promise<void> {
     } = event;
 
     await logger.info("---------- DAppStaking - New sub period  --------- ");
-    await logger.info(DAPPSTAKING_CONTRACT_ID);
-    await logger.info(DAPPSTAKING_DEVELOPER_ID);
+    await logger.info("subPeriod : " + subPeriod );
+    await logger.info("period : " + period );
 
-    const newSubPeriod = await toBigInt(subPeriod);
     const newPeriod = await toBigInt(period);
 
     let dAppSubPeriod = DAppSubPeriod.create({
         id: `${event.block.block.header.number.toNumber()}-${event.idx}`,
         period: newPeriod,
-        subPeriod: newSubPeriod,
+        subPeriod: subPeriod.toString(),
         blockNumber: event.block.block.header.number.toBigInt(),
     });
 
@@ -211,7 +204,7 @@ export async function handleNewSubPeriod(event: SubstrateEvent): Promise<void> {
 
     let palletInfo = await getPalletInfo();
     palletInfo.currentPeriod = newPeriod;
-    palletInfo.currentSubPeriod = newSubPeriod;
+    palletInfo.currentSubPeriod = subPeriod.toString();
     await palletInfo.save();
 }
 

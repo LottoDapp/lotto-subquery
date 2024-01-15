@@ -54,7 +54,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         kind: SubstrateHandlerKind.Event,
                         handler: "handleStake",
                         filter: {
-                            module: "DappStaking",
+                            module: "dappStaking",
                             method: "Stake",
                         },
                     },
@@ -62,7 +62,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         kind: SubstrateHandlerKind.Event,
                         handler: "handleUnstake",
                         filter: {
-                            module: "DappStaking",
+                            module: "dappStaking",
                             method: "Unstake",
                         },
                     },
@@ -70,7 +70,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         kind: SubstrateHandlerKind.Event,
                         handler: "handleDAppReward",
                         filter: {
-                            module: "DappStaking",
+                            module: "dappStaking",
                             method: "DAppReward",
                         },
                     },
@@ -78,7 +78,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         kind: SubstrateHandlerKind.Event,
                         handler: "handleNewEra",
                         filter: {
-                            module: "DappStaking",
+                            module: "dappStaking",
                             method: "NewEra",
                         },
                     },
@@ -86,7 +86,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         kind: SubstrateHandlerKind.Event,
                         handler: "handleNewSubPeriod",
                         filter: {
-                            module: "DappStaking",
+                            module: "dappStaking",
                             method: "NewSubperiod",
                         },
                     },
