@@ -28,7 +28,7 @@ type DAppReward @entity {
     id: ID! # Transaction hash
     era: BigInt!
     tierId: BigInt!
-    account: Account!
+    beneficiary: Account!
     amount: BigInt!
 }
 

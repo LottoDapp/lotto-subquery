@@ -24,8 +24,11 @@ const DAPPSTAKING_DEVELOPER_ID = process.env.DAPPSTAKING_DEVELOPER_ID as string;
 async function getPalletInfo(): Promise<PalletInfo> {
     let palletInfo = await PalletInfo.get('0');
     if (palletInfo) {
+        await logger.info("---------- getPalletInfo - existing pallet info --------- ");
         return palletInfo;
     }
+
+    await logger.info("---------- getPalletInfo - New Pallet Info --------- ");
     return PalletInfo.create({
         id: '0',
         currentEra: BigInt(0),
@@ -37,8 +40,10 @@ async function getPalletInfo(): Promise<PalletInfo> {
 async function getAccount(accountId: string): Promise<Account> {
     let userAccount = await Account.get(accountId);
     if (userAccount) {
+        await logger.info("---------- getAccount - Existing Account --------- ");
         return userAccount;
     }
+    await logger.info("---------- getAccount - New Account --------- ");
     return Account.create({
         id: accountId,
         totalStake: BigInt(0),
@@ -137,10 +142,10 @@ export async function handleDAppReward(event: SubstrateEvent): Promise<void> {
     }
 
     /* save the developer account the first time to avoid an error with FK */
-    let developerAccount = await Account.get(beneficiary.toString());
-    if (!developerAccount) {
-        developerAccount = new Account(beneficiary.toString(), BigInt(0), BigInt(0), BigInt(0), BigInt(0));
-        await developerAccount.save();
+    let beneficiaryAccount = await Account.get(beneficiary.toString());
+    if (!beneficiaryAccount) {
+        beneficiaryAccount = new Account(beneficiary.toString(), BigInt(0), BigInt(0), BigInt(0), BigInt(0));
+        await beneficiaryAccount.save();
     }
 
     const bi_era = await toBigInt(era);
@@ -149,7 +154,7 @@ export async function handleDAppReward(event: SubstrateEvent): Promise<void> {
     let reward = DAppReward.create({
         id: `${event.block.block.header.number.toNumber()}-${event.idx}`,
         era: bi_era,
-        accountId: developerAccount.id,
+        beneficiaryId: beneficiaryAccount.id,
         amount: (amount as Balance).toBigInt(),
         tierId: tierId_era,
     });
@@ -164,6 +169,7 @@ export async function handleNewEra(event: SubstrateEvent): Promise<void> {
     } = event;
 
     await logger.info("---------- DAppStaking - New Era --------- ");
+    await logger.info("era : " + era );
 
     const newEra = await toBigInt(era);
     let dappStakingEra = DAppStakingEra.create({
@@ -176,6 +182,8 @@ export async function handleNewEra(event: SubstrateEvent): Promise<void> {
 
     let palletInfo = await getPalletInfo();
     palletInfo.currentEra = newEra;
+    await logger.info("currentPeriod : " + palletInfo.currentPeriod );
+    await logger.info("currentSubPeriod : " + palletInfo.currentSubPeriod );
     await palletInfo.save();
 }
 
@@ -203,6 +211,7 @@ export async function handleNewSubPeriod(event: SubstrateEvent): Promise<void> {
     await dAppSubPeriod.save();
 
     let palletInfo = await getPalletInfo();
+    await logger.info("currentEra : " + palletInfo.currentEra );
     palletInfo.currentPeriod = newPeriod;
     palletInfo.currentSubPeriod = subPeriod.toString();
     await palletInfo.save();
