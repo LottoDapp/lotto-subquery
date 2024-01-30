@@ -1,8 +1,4 @@
-import {
-    SubstrateDatasourceKind,
-    SubstrateHandlerKind,
-    SubstrateProject,
-} from "@subql/types";
+import {SubstrateDatasourceKind, SubstrateHandlerKind, SubstrateProject,} from "@subql/types";
 
 import {WasmDatasource} from "@subql/substrate-wasm-processor";
 
@@ -92,10 +88,11 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                     },
                 ],
             },
-        },/*
+        },
         {
             kind: "substrate/Wasm",
-            startBlock: 5335000,
+            startBlock: 5600000,
+            //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
@@ -109,12 +106,23 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                 handlers: [
                     {
                         handler: "handleRaffleDone",
-                        kind: "substrate/W
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            contract: "Y4k5gyegtv3UuZBLFKVtfThoXvpSAPNeQeLutodrCukrpzy",
+                            identifier: "RaffleDone"
+                        }
+                    }
+                ]
+            }
+        },
         {
             kind: "substrate/Wasm",
-            startBlock: 5335000,
+            startBlock: 3393298,
+            //endBlock: 1,
             processor: {
-                file: "./node_modules/@subql/substrate-wasm-pr
+                file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
+                options: {
+                    abi: "rewardManager",
                     contract: "X8nqJsFQWBk137WxetcPdAGLwnJ8xpAQ5tXS1bNsHKaz1q6",
                 },
             },
@@ -126,19 +134,21 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         handler: "handlePendingReward",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            identifier: "PendingReward",
-                        },
+                            contract: "X8nqJsFQWBk137WxetcPdAGLwnJ8xpAQ5tXS1bNsHKaz1q6",
+                            identifier: "PendingReward"
+                        }
                     },
                     {
                         handler: "handleRewardsClaimed",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            identifier: "RewardsClaimed",
-                        },
-                    },
-                ],
-            },
-        },*/
+                            contract: "X8nqJsFQWBk137WxetcPdAGLwnJ8xpAQ5tXS1bNsHKaz1q6",
+                            identifier: "RewardsClaimed"
+                        }
+                    }
+                ]
+            }
+        },
     ],
 };
 
