@@ -4,8 +4,12 @@
   "description": "A basic Substrate WASM example project with an event and call handler. Read more about this at https://academy.subquery.network/build/substrate-wasm.html. This project can be use as a starting point for developing your SubQuery project",
   "main": "dist/index.js",
   "scripts": {
-    "build": "subql build -f project-shibuya.ts",
-    "codegen": "subql codegen -f project-shibuya.ts",
+    "codegen-shibuya": "subql codegen -f project-shibuya.ts",
+    "build-shibuya": "subql build -f project-shibuya.ts",
+    "codegen-shiden": "subql codegen -f project-shiden.ts",
+    "build-shiden": "subql build -f project-shiden.ts",
+    "codegen-astar": "subql codegen -f project-astar.ts",
+    "build-astar": "subql build -f project-astar.ts",
     "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
     "dev": "subql codegen && subql build && docker-compose pull && docker-compose up --remove-orphans",
     "prepack": "rm -rf dist && npm run build",
@@ -34,6 +38,8 @@
   },
   "exports": {
     "chaintypes": "src/chaintypes.ts",
-    "indexShibuya": "src/indexShibuya.ts"
+    "indexShibuya": "src/indexShibuya.ts",
+    "indexShiden": "src/indexShiden.ts",
+    "indexAstar": "src/indexAstar.ts"
   }
 }

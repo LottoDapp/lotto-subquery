@@ -1,7 +1,3 @@
-# To improve query performance, we strongly suggest adding indexes to any field that you plan to filter or sort by
-# Add the `@index` or `@index(unique: true)` annotation after any non-key field
-# https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
-
 
 type Account @entity {
     id: ID! # account address
@@ -30,6 +26,14 @@ type DAppReward @entity {
     tierId: BigInt!
     beneficiary: Account!
     amount: BigInt!
+}
+
+""" Developer Reward have been used in dAppStaking V2 - we can remove it when dAppStaking V3 will be fully operational """
+type DeveloperReward @entity {
+  id: ID! # Transaction hash
+  era: BigInt!
+  account: Account!
+  amount: BigInt!
 }
 
 type PalletInfo @entity {
