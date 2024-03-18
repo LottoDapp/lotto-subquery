@@ -37,6 +37,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
          *         endpoint: ["wss://rpc.shibuya.astar.network", "wss://shibuya-rpc.dwellir.com"],
          */
         endpoint: ["wss://rpc.shibuya.astar.network"],
+        bypassBlocks: [5891857]
     },
     dataSources: [
         {
