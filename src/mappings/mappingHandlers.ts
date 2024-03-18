@@ -521,7 +521,7 @@ export async function handleRaffleDone(event: WasmEvent<RaffleDoneEvent>): Promi
     const [contract, era, pendingRewards, nbWinners, nbParticipants, totalValue] = event.args;
 
     let raffleDone = RaffleDone.create({
-        id: `${event.blockNumber.valueOf()}-${event.eventIndex.valueOf()}`,
+        id: `${event.blockNumber.valueOf()}-${event.blockEventIdx.valueOf()}`,
         era: era.toBigInt(),
         totalRewards: pendingRewards.toBigInt(),
         nbWinners: nbWinners.toBigInt(),
@@ -556,7 +556,7 @@ export async function handlePendingReward(event: WasmEvent<PendingRewardEvent>):
     await userAccount.save();
 
     let reward = Reward.create({
-        id: `${event.blockNumber.valueOf()}-${event.eventIndex.valueOf()}`,
+        id: `${event.blockNumber.valueOf()}-${event.blockEventIdx.valueOf()}`,
         accountId: userAccount.id,
         era: era.toBigInt(),
         amount: amount.toBigInt()
@@ -588,7 +588,7 @@ export async function handleRewardsClaimed(event: WasmEvent<RewardsClaimedEvent>
     await userAccount.save();
 
     let rewardsClaimed = RewardsClaimed.create({
-            id: `${event.blockNumber.valueOf()}-${event.eventIndex.valueOf()}`,
+            id: `${event.blockNumber.valueOf()}-${event.blockEventIdx.valueOf()}`,
             accountId: userAccount.id,
             amount: amount.toBigInt()
         }
