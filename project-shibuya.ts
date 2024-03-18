@@ -97,7 +97,8 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
                     abi: "luckyRaffle",
-                    contract: "Y4k5gyegtv3UuZBLFKVtfThoXvpSAPNeQeLutodrCukrpzy",
+                    //old contract before 2024-03-01: "Y4k5gyegtv3UuZBLFKVtfThoXvpSAPNeQeLutodrCukrpzy",
+                    contract: "WxB2uwWr1JmUZofp1amiKUcsjtsCZKTUBZg4MWf3HJoMQuY",
                 },
             },
             assets: new Map([["luckyRaffle", {file: "./metadata_shibuya/lucky_raffle_metadata.json"}]]),
@@ -108,7 +109,7 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                         handler: "handleRaffleDone",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            contract: "Y4k5gyegtv3UuZBLFKVtfThoXvpSAPNeQeLutodrCukrpzy",
+                            contract: "WxB2uwWr1JmUZofp1amiKUcsjtsCZKTUBZg4MWf3HJoMQuY",
                             identifier: "RaffleDone"
                         }
                     }
