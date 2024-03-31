@@ -6,9 +6,9 @@ import {WasmDatasource} from "@subql/substrate-wasm-processor";
 const projectShibuya: SubstrateProject<WasmDatasource> = {
     specVersion: "1.0.0",
     version: "2.0.0",
-    name: "lucky-subql",
+    name: "lotto-subql",
     description:
-        "This SubQuery project indexes data used by the dApp Lucky on Shibuya network",
+        "This SubQuery project indexes data used by the Lotto dApp on Shibuya network",
     runner: {
         node: {
             name: "@subql/node",
@@ -41,111 +41,53 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
     },
     dataSources: [
         {
-            // This is the datasource for Astar's Native Substrate processor
-            kind: SubstrateDatasourceKind.Runtime,
-            startBlock: 5472414,
-            mapping: {
-                file: "./dist/indexShibuya.js",
-                handlers: [
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "handleStake",
-                        filter: {
-                            module: "dappStaking",
-                            method: "Stake",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "handleUnstake",
-                        filter: {
-                            module: "dappStaking",
-                            method: "Unstake",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "handleDAppReward",
-                        filter: {
-                            module: "dappStaking",
-                            method: "DAppReward",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "handleNewEra",
-                        filter: {
-                            module: "dappStaking",
-                            method: "NewEra",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "handleNewSubPeriod",
-                        filter: {
-                            module: "dappStaking",
-                            method: "NewSubperiod",
-                        },
-                    },
-                ],
-            },
-        },
-        {
             kind: "substrate/Wasm",
-            startBlock: 5600000,
+            startBlock: 5979041,
             //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
-                    abi: "luckyRaffle",
-                    //old contract before 2024-03-01: "Y4k5gyegtv3UuZBLFKVtfThoXvpSAPNeQeLutodrCukrpzy",
-                    contract: "WxB2uwWr1JmUZofp1amiKUcsjtsCZKTUBZg4MWf3HJoMQuY",
+                    abi: "lotto",
+                    contract: "WMrGnPBnqDUbmK3yNSi2KFibZg4skwtUSzauYgGm3KJyCxm",
                 },
             },
-            assets: new Map([["luckyRaffle", {file: "./metadata_shibuya/lucky_raffle_metadata.json"}]]),
+            assets: new Map([["lotto", {file: "./metadata_shibuya/lotto_contract.json"}]]),
             mapping: {
                 file: "./dist/indexShibuya.js",
                 handlers: [
                     {
-                        handler: "handleRaffleDone",
+                        handler: "handleRaffleStarted",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            contract: "WxB2uwWr1JmUZofp1amiKUcsjtsCZKTUBZg4MWf3HJoMQuY",
-                            identifier: "RaffleDone"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            kind: "substrate/Wasm",
-            startBlock: 3393298,
-            //endBlock: 1,
-            processor: {
-                file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
-                options: {
-                    abi: "rewardManager",
-                    contract: "X8nqJsFQWBk137WxetcPdAGLwnJ8xpAQ5tXS1bNsHKaz1q6",
-                },
-            },
-            assets: new Map([["rewardManager", {file: "./metadata_shibuya/reward_manager_metadata.json"}]]),
-            mapping: {
-                file: "./dist/indexShibuya.js",
-                handlers: [
-                    {
-                        handler: "handlePendingReward",
-                        kind: "substrate/WasmEvent",
-                        filter: {
-                            contract: "X8nqJsFQWBk137WxetcPdAGLwnJ8xpAQ5tXS1bNsHKaz1q6",
-                            identifier: "PendingReward"
+                            identifier: "RaffleStarted"
                         }
                     },
                     {
-                        handler: "handleRewardsClaimed",
+                        handler: "handleRaffleEnded",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            contract: "X8nqJsFQWBk137WxetcPdAGLwnJ8xpAQ5tXS1bNsHKaz1q6",
-                            identifier: "RewardsClaimed"
+                            identifier: "RaffleEnded"
+                        }
+                    },
+                    {
+                        handler: "handleParticipationRegistered",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "ParticipationRegistered"
+                        }
+                    },
+                    {
+                        handler: "handleResultReceived",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "ResultReceived"
+                        }
+                    },
+                    {
+                        handler: "handleWinnersRevealed",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "WinnersRevealed"
                         }
                     }
                 ]

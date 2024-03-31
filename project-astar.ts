@@ -6,9 +6,9 @@ import {WasmDatasource} from "@subql/substrate-wasm-processor";
 const projectAstar: SubstrateProject<WasmDatasource> = {
     specVersion: "1.0.0",
     version: "2.0.0",
-    name: "lucky-subql",
+    name: "lotto-subql",
     description:
-        "This SubQuery project indexes data used by the dApp Lucky on Astar network",
+        "This SubQuery project indexes data used by the Lotto dApp on Astar network",
     runner: {
         node: {
             name: "@subql/node",

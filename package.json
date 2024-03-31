@@ -1,13 +1,11 @@
 {
-  "name": "lucky-subquery-v3",
+  "name": "lotto-subquery",
   "version": "1.0.0",
-  "description": "A basic Substrate WASM example project with an event and call handler. Read more about this at https://academy.subquery.network/build/substrate-wasm.html. This project can be use as a starting point for developing your SubQuery project",
+  "description": "SubQuery Indexer for the Lotto dApp",
   "main": "dist/index.js",
   "scripts": {
     "codegen-shibuya": "subql codegen -f project-shibuya.ts",
     "build-shibuya": "subql build -f project-shibuya.ts",
-    "codegen-shiden": "subql codegen -f project-shiden.ts",
-    "build-shiden": "subql build -f project-shiden.ts",
     "codegen-astar": "subql codegen -f project-astar.ts",
     "build-astar": "subql build -f project-astar.ts",
     "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
@@ -15,8 +13,8 @@
     "prepack": "rm -rf dist && npm run build",
     "test": "subql build && subql-node test"
   },
-  "homepage": "https://github.com/LuckyDapp/subquery-lucky-v3",
-  "repository": "https://github.com/LuckyDapp/subquery-lucky-v3",
+  "homepage": "https://github.com/GuiGou12358/lotto-subquery",
+  "repository": "https://github.com/GuiGou12358/lotto-subquery",
   "files": [
     "dist",
     "schema.graphql",
@@ -38,8 +36,6 @@
   },
   "exports": {
     "chaintypes": "src/chaintypes.ts",
-    "indexShibuya": "src/indexShibuya.ts",
-    "indexShiden": "src/indexShiden.ts",
-    "indexAstar": "src/indexAstar.ts"
+    "indexShibuya": "src/index.ts"
   }
 }

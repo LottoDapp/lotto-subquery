@@ -1,80 +1,27 @@
 
-type Account @entity {
-    id: ID! # account address
-    stakes: [Stake] @derivedFrom(field: "account") #virtual field
-    totalStake: BigInt!
-    rewards: [Reward] @derivedFrom(field: "account") #virtual field
-    rewardsClaimed: [RewardsClaimed] @derivedFrom(field: "account") #virtual field
-    totalRewards: BigInt!
-    totalClaimed: BigInt!
-    totalPending: BigInt!
+type Raffle @entity {
+    id: ID! # num_raffle
+    startedOn: BigInt # BlockNumber
+    endedOn: BigInt # BlockNumber
+    hasWinner: Boolean
 }
 
-type Stake @entity {
+type Participation @entity {
     id: ID! # Extrinsic hash
-    account: Account!
-    amount: BigInt!
-    era: BigInt
-    period: BigInt
-    subPeriod: String
-    blockNumber: BigInt!
+    num_raffle: BigInt!
+    accountId: String! # Account Address
+    numbers: [BigInt]!
 }
 
-type DAppReward @entity {
-    id: ID! # Transaction hash
-    era: BigInt!
-    tierId: BigInt!
-    beneficiary: Account!
-    amount: BigInt!
+type Result @entity {
+    id: ID! # Extrinsic hash
+    num_raffle: BigInt!
+    numbers: [BigInt]!
 }
 
-""" Developer Reward have been used in dAppStaking V2 - we can remove it when dAppStaking V3 will be fully operational """
-type DeveloperReward @entity {
-  id: ID! # Transaction hash
-  era: BigInt!
-  account: Account!
-  amount: BigInt!
-}
-
-type PalletInfo @entity {
-    id: ID! # always 0
-    currentEra: BigInt
-    currentPeriod: BigInt
-    currentSubPeriod: String
-}
-
-type DAppStakingEra @entity {
-    id: ID! # Transaction hash
-    era: BigInt!
-    blockNumber: BigInt!
-}
-
-type DAppSubPeriod @entity {
-    id: ID! # Transaction hash
-    period: BigInt!
-    subPeriod: String!
-    blockNumber: BigInt!
-}
-
-type RaffleDone @entity {
-    id: ID! # Transaction hash
-    era: BigInt!
-    totalRewards: BigInt!
-    nbWinners: BigInt!
-    nbParticipants: BigInt!
-    totalValue: BigInt!
-}
-
-type Reward @entity {
-    id: ID! # Transaction hash
-    account: Account!
-    era: BigInt!
-    amount: BigInt!
-}
-
-type RewardsClaimed @entity {
-    id: ID! # Transaction hash
-    account: Account!
-    amount: BigInt!
+type Winner @entity {
+    id: ID! # concat account + num_raffle
+    num_raffle: BigInt!
+    accountId: String! # Account Address
 }
 
