@@ -40,17 +40,12 @@ For this project, you can try to query with the following GraphQL code to get a 
 
 ```graphql
 query {
-  transactions(first: 3, orderBy: BLOCK_HEIGHT_ASC) {
-    totalCount
+  participations {
     nodes {
       id
-      timestamp
-      blockHeight
-      transactionHash
-      blockHash
-      contractAddress
-      from
-      value
+      accountId
+      numRaffle
+      numbers
     }
   }
 }
