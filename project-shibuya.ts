@@ -93,6 +93,59 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
                 ]
             }
         },
+        {
+            kind: "substrate/Wasm",
+            startBlock: 5979041,
+            //endBlock: 1,
+            processor: {
+                file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
+                options: {
+                    abi: "lotto",
+                    contract: "aB9AxBVmoYogZ5ZAX662R5YJafTVCqVbtGzJYX3LvvwZW5r",
+                },
+            },
+            assets: new Map([["lotto", {file: "./metadata_shibuya/lotto_contract.json"}]]),
+            mapping: {
+                file: "./dist/indexShibuya.js",
+                handlers: [
+                    {
+                        handler: "handleRaffleStarted",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "RaffleStarted"
+                        }
+                    },
+                    {
+                        handler: "handleRaffleEnded",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "RaffleEnded"
+                        }
+                    },
+                    {
+                        handler: "handleParticipationRegistered",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "ParticipationRegistered"
+                        }
+                    },
+                    {
+                        handler: "handleResultReceived",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "ResultReceived"
+                        }
+                    },
+                    {
+                        handler: "handleWinnersRevealed",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "WinnersRevealed"
+                        }
+                    }
+                ]
+            }
+        }
     ],
 };
 
