@@ -132,7 +132,7 @@ type WinnersRevealedEvent = [UInt, [AccountId]] & {
 
 export async function handleWinnersRevealed(event: WasmEvent<WinnersRevealedEvent>): Promise<void> {
 
-    await logger.info("---------- Result Received --------- ");
+    await logger.info("---------- Winners Revealed --------- ");
 
     if (!event.args) {
         await logger.warn("No Event");
