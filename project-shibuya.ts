@@ -47,11 +47,11 @@ const projectShibuya: SubstrateProject<WasmDatasource> = {
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
-                    abi: "lotto_v1",
-                    contract: "WMrGnPBnqDUbmK3yNSi2KFibZg4skwtUSzauYgGm3KJyCxm",
+                    abi: "lotto",
+                    contract: "bQBYitAbSZuJUvL2ZGqinseRXrcTggZ6F4TvJKYrR7WvkvJ",
                 },
             },
-            assets: new Map([["lotto_v1", {file: "./metadata_shibuya/lotto_contract.json"}]]),
+            assets: new Map([["lotto", {file: "./metadata_shibuya/lotto_contract.json"}]]),
             mapping: {
                 file: "./dist/indexShibuya.js",
                 handlers: [
