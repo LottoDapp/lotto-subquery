@@ -18,7 +18,8 @@
   "files": [
     "dist",
     "schema.graphql",
-    "project-shibuya.ts"
+    "project-shibuya.ts",
+    "project-astar.ts"
   ],
   "author": "GuiGou",
   "license": "Apache-2.0",
@@ -36,6 +37,6 @@
   },
   "exports": {
     "chaintypes": "src/chaintypes.ts",
-    "indexShibuya": "src/index.ts"
+    "index": "src/index.ts"
   }
 }
