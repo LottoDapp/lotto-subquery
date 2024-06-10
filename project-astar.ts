@@ -29,165 +29,58 @@ const projectAstar: SubstrateProject<WasmDatasource> = {
     },
     dataSources: [
         {
-            // This is the datasource for Astar's Native Substrate processor (dAppStakingV2)
-            kind: SubstrateDatasourceKind.Runtime,
-            startBlock: 4668050,
-            mapping: {
-                file: "./dist/indexAstar.js",
-                handlers: [
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "bondAndStakeV2",
-                        filter: {
-                            module: "dappsStaking",
-                            method: "BondAndStake",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "unbondAndUnstakeV2",
-                        filter: {
-                            module: "dappsStaking",
-                            method: "UnbondAndUnstake",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "nominationTransferV2",
-                        filter: {
-                            module: "dappsStaking",
-                            method: "NominationTransfer",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "rewardV2",
-                        filter: {
-                            module: "dappsStaking",
-                            method: "Reward",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "newDappStakingEraV2",
-                        filter: {
-                            module: "dappsStaking",
-                            method: "NewDappStakingEra",
-                        },
-                    },
-                ],
-            },
-        },
-        {
-            // This is the datasource for dAppStakingV3 events
-            kind: SubstrateDatasourceKind.Runtime,
-            startBlock: 5445000,
-            mapping: {
-                file: "./dist/indexAstar.js",
-                handlers: [
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "handleStake",
-                        filter: {
-                            module: "dappStaking",
-                            method: "Stake",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "handleUnstake",
-                        filter: {
-                            module: "dappStaking",
-                            method: "Unstake",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "handleDAppReward",
-                        filter: {
-                            module: "dappStaking",
-                            method: "DAppReward",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "handleNewEra",
-                        filter: {
-                            module: "dappStaking",
-                            method: "NewEra",
-                        },
-                    },
-                    {
-                        kind: SubstrateHandlerKind.Event,
-                        handler: "handleNewSubPeriod",
-                        filter: {
-                            module: "dappStaking",
-                            method: "NewSubperiod",
-                        },
-                    },
-                ],
-            },
-        },
-        {
             kind: "substrate/Wasm",
-            startBlock: 4668050,
+            startBlock: 6360600,
             //endBlock: 1,
             processor: {
                 file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
                 options: {
-                    abi: "luckyRaffle",
-                    contract: "XPC4BUeSHhTWqzUdUWtW1cTNHhktNPgenKZ4qq2FkKR2two",
+                    abi: "lotto",
+                    contract: "XSMfwh4kriyo96h5LBdttiixKKd3fRxZL5dR81pK4gCuNsC",
                 },
             },
-            assets: new Map([["luckyRaffle", {file: "./metadata_astar/lucky_raffle_metadata.json"}]]),
+            assets: new Map([["lotto", {file: "./metadata_astar/lotto_contract.json"}]]),
             mapping: {
-                file: "./dist/indexAstar.js",
+                file: "./dist/index.js",
                 handlers: [
                     {
-                        handler: "handleRaffleDone",
+                        handler: "handleRaffleStarted",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            contract: "XPC4BUeSHhTWqzUdUWtW1cTNHhktNPgenKZ4qq2FkKR2two",
-                            identifier: "RaffleDone"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            kind: "substrate/Wasm",
-            startBlock: 4668050,
-            //endBlock: 1,
-            processor: {
-                file: "./node_modules/@subql/substrate-wasm-processor/dist/bundle.js",
-                options: {
-                    abi: "rewardManager",
-                    contract: "ZSV1GVepvmWFdshMWgczS4zYvmmwEsBjWQjN4WDpUEFRRPy",
-                },
-            },
-            assets: new Map([["rewardManager", {file: "./metadata_astar/reward_manager_metadata.json"}]]),
-            mapping: {
-                file: "./dist/indexAstar.js",
-                handlers: [
-                    {
-                        handler: "handlePendingReward",
-                        kind: "substrate/WasmEvent",
-                        filter: {
-                            contract: "ZSV1GVepvmWFdshMWgczS4zYvmmwEsBjWQjN4WDpUEFRRPy",
-                            identifier: "PendingReward"
+                            identifier: "RaffleStarted"
                         }
                     },
                     {
-                        handler: "handleRewardsClaimed",
+                        handler: "handleRaffleEnded",
                         kind: "substrate/WasmEvent",
                         filter: {
-                            contract: "ZSV1GVepvmWFdshMWgczS4zYvmmwEsBjWQjN4WDpUEFRRPy",
-                            identifier: "RewardsClaimed"
+                            identifier: "RaffleEnded"
+                        }
+                    },
+                    {
+                        handler: "handleParticipationRegistered",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "ParticipationRegistered"
+                        }
+                    },
+                    {
+                        handler: "handleResultReceived",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "ResultReceived"
+                        }
+                    },
+                    {
+                        handler: "handleWinnersRevealed",
+                        kind: "substrate/WasmEvent",
+                        filter: {
+                            identifier: "WinnersRevealed"
                         }
                     }
                 ]
             }
-        },
+        }
     ],
 };
 
