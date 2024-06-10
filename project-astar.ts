@@ -41,7 +41,7 @@ const projectAstar: SubstrateProject<WasmDatasource> = {
             },
             assets: new Map([["lotto", {file: "./metadata_astar/lotto_contract.json"}]]),
             mapping: {
-                file: "./dist/indexAstar.js",
+                file: "./dist/index.js",
                 handlers: [
                     {
                         handler: "handleRaffleStarted",
